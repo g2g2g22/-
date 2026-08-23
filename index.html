@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Куб Кликер 🎲</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Шапка с балансом -->
+        <div class="header">
+            <div class="balance">
+                <span class="coin-icon">🪙</span>
+                <span id="coins">0</span>
+            </div>
+            <div class="income">
+                ⚡ <span id="incomePerHour">0</span>/час
+            </div>
+        </div>
+
+        <!-- Куб -->
+        <div class="cube-wrapper" id="cubeWrapper">
+            <div class="cube" id="cube">
+                <div class="face front">🎲</div>
+                <div class="face back">🎲</div>
+                <div class="face right">🎲</div>
+                <div class="face left">🎲</div>
+                <div class="face top">🎲</div>
+                <div class="face bottom">🎲</div>
+            </div>
+        </div>
+
+        <!-- Инфо -->
+        <div class="click-info">
+            <span>💪 <span id="clickPower">1</span>x</span>
+            <span>🎯 <span id="totalClicks">0</span></span>
+        </div>
+
+        <!-- Кнопка сбора -->
+        <button class="claim-btn" id="claimBtn">📥 Собрать пассивку</button>
+
+        <!-- Вкладки -->
+        <div class="tabs">
+            <button class="tab active" data-tab="generators">📊 Генераторы</button>
+            <button class="tab" data-tab="boosters">⚡ Бустеры</button>
+            <button class="tab" data-tab="stats">📈 Статистика</button>
+        </div>
+
+        <!-- Контент -->
+        <div class="tab-content">
+            <div id="generators" class="tab-panel active">
+                <div id="generatorsList"></div>
+            </div>
+            <div id="boosters" class="tab-panel">
+                <div class="booster-grid">
+                    <div class="booster-card" data-booster="x2">
+                        <div class="booster-icon">⚡</div>
+                        <div class="booster-name">x2 на 5 мин</div>
+                        <div class="booster-price">500 🪙</div>
+                        <button class="buy-booster">Купить</button>
+                    </div>
+                    <div class="booster-card" data-booster="x5">
+                        <div class="booster-icon">🔥</div>
+                        <div class="booster-name">x5 на 2 мин</div>
+                        <div class="booster-price">2000 🪙</div>
+                        <button class="buy-booster">Купить</button>
+                    </div>
+                    <div class="booster-card" data-booster="auto">
+                        <div class="booster-icon">🤖</div>
+                        <div class="booster-name">Авто-клик 1 мин</div>
+                        <div class="booster-price">5000 🪙</div>
+                        <button class="buy-booster">Купить</button>
+                    </div>
+                </div>
+                <div id="activeBoosters"></div>
+            </div>
+            <div id="stats" class="tab-panel">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span class="stat-label">Всего кликов</span>
+                        <span class="stat-value" id="statClicks">0</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Заработано</span>
+                        <span class="stat-value" id="statEarned">0</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Доход/час</span>
+                        <span class="stat-value" id="statIncome">0</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Генераторов</span>
+                        <span class="stat-value" id="statGenerators">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
