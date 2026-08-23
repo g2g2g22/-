@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Куб Кликер</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Баланс -->
+        <div id="balance">
+            🪙 <span id="coins">0</span>
+        </div>
+
+        <!-- Куб -->
+        <div id="cube" onclick="clickCube()">
+            🎲
+        </div>
+
+        <!-- Инфо -->
+        <div id="info">
+            <span>💪 <span id="clickPower">1</span>x</span>
+            <span>⚡ <span id="incomePerHour">0</span>/час</span>
+        </div>
+
+        <!-- Кнопка сбора -->
+        <button id="claimBtn" onclick="claimPassive()">📥 Собрать пассивку</button>
+
+        <!-- Вкладки -->
+        <div id="tabs">
+            <button class="tab active" onclick="switchTab('generators')">📊 Генераторы</button>
+            <button class="tab" onclick="switchTab('boosters')">⚡ Бустеры</button>
+            <button class="tab" onclick="switchTab('stats')">📈 Статистика</button>
+        </div>
+
+        <!-- Генераторы -->
+        <div id="generators" class="tab-content active">
+            <div id="generatorsList"></div>
+        </div>
+
+        <!-- Бустеры -->
+        <div id="boosters" class="tab-content">
+            <div class="booster-grid">
+                <div class="booster-card">
+                    <div>⚡</div>
+                    <div>x2 на 5 мин</div>
+                    <div class="price">500 🪙</div>
+                    <button onclick="buyBooster('x2')">Купить</button>
+                </div>
+                <div class="booster-card">
+                    <div>🔥</div>
+                    <div>x5 на 2 мин</div>
+                    <div class="price">2000 🪙</div>
+                    <button onclick="buyBooster('x5')">Купить</button>
+                </div>
+                <div class="booster-card">
+                    <div>🤖</div>
+                    <div>Авто-клик 1 мин</div>
+                    <div class="price">5000 🪙</div>
+                    <button onclick="buyBooster('auto')">Купить</button>
+                </div>
+            </div>
+            <div id="activeBoosters"></div>
+        </div>
+
+        <!-- Статистика -->
+        <div id="stats" class="tab-content">
+            <div class="stat-item">Всего кликов: <span id="statClicks">0</span></div>
+            <div class="stat-item">Заработано: <span id="statEarned">0</span></div>
+            <div class="stat-item">Доход/час: <span id="statIncome">0</span></div>
+            <div class="stat-item">Генераторов: <span id="statGenerators">0</span></div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
