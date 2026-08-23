@@ -1,0 +1,538 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background: #000000;
+    color: #ffffff;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    height: 100vh;
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+}
+
+#app {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    background: #000000;
+}
+
+/* Шапка */
+#header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    background: #0a0a0a;
+    border-radius: 12px;
+    border: 1px solid #1a1a1a;
+    margin-bottom: 10px;
+}
+
+.coins-display {
+    font-size: 24px;
+    font-weight: bold;
+    color: #ffd700;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+#diceBtn {
+    background: transparent;
+    border: none;
+    font-size: 30px;
+    cursor: pointer;
+    transition: transform 0.3s;
+    padding: 5px 10px;
+}
+
+#diceBtn:active {
+    transform: scale(0.8);
+}
+
+/* Контейнер с кубами */
+#cube-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    min-height: 250px;
+}
+
+/* Главный куб */
+#main-cube {
+    font-size: 120px;
+    cursor: pointer;
+    transition: transform 0.15s;
+    position: relative;
+    z-index: 10;
+    text-shadow: 0 0 40px rgba(255, 255, 255, 0.1);
+}
+
+#main-cube:active {
+    transform: scale(0.85);
+}
+
+/* Анимация вращения куба как в Telegram */
+@keyframes diceRoll {
+    0% { transform: rotate(0deg) scale(1); }
+    10% { transform: rotate(36deg) scale(1.1); }
+    20% { transform: rotate(72deg) scale(0.9); }
+    30% { transform: rotate(108deg) scale(1.1); }
+    40% { transform: rotate(144deg) scale(0.9); }
+    50% { transform: rotate(180deg) scale(1.1); }
+    60% { transform: rotate(216deg) scale(0.9); }
+    70% { transform: rotate(252deg) scale(1.1); }
+    80% { transform: rotate(288deg) scale(0.9); }
+    90% { transform: rotate(324deg) scale(1.1); }
+    100% { transform: rotate(360deg) scale(1); }
+}
+
+#main-cube.rolling {
+    animation: diceRoll 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+/* Мини-кубы генераторов (статичные вокруг) */
+#mini-cubes {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.mini-cube {
+    position: absolute;
+    font-size: 28px;
+    opacity: 0.6;
+    transition: all 0.5s;
+    transform: translate(-50%, -50%);
+}
+
+.mini-cube.bought {
+    opacity: 1;
+}
+
+.mini-cube.flash {
+    animation: flashGreen 0.5s ease;
+}
+
+@keyframes flashGreen {
+    0% { transform: translate(-50%, -50%) scale(1); filter: brightness(1); }
+    50% { transform: translate(-50%, -50%) scale(2); filter: brightness(2) drop-shadow(0 0 20px #00ff00); }
+    100% { transform: translate(-50%, -50%) scale(1); filter: brightness(1); }
+}
+
+/* Анимация клика - цифры разлетаются */
+.click-burst-float {
+    position: absolute;
+    pointer-events: none;
+    z-index: 20;
+    animation: floatUp 0.7s ease-out forwards;
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+}
+
+@keyframes floatUp {
+    0% {
+        opacity: 1;
+        transform: scale(0.5) translateY(0);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.2) translateY(-30px);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0.8) translateY(-80px);
+    }
+}
+
+/* Информация */
+#info {
+    display: flex;
+    justify-content: space-around;
+    padding: 15px;
+    background: #0a0a0a;
+    border-radius: 12px;
+    border: 1px solid #1a1a1a;
+    margin: 10px 0;
+}
+
+.info-item {
+    font-size: 18px;
+    color: #aaaaaa;
+}
+
+.info-item span {
+    color: #ffffff;
+    font-weight: bold;
+}
+
+/* Нижнее меню */
+#bottom-menu {
+    display: flex;
+    justify-content: space-around;
+    background: #0a0a0a;
+    border-radius: 12px;
+    border: 1px solid #1a1a1a;
+    padding: 8px;
+}
+
+.tab-btn {
+    background: transparent;
+    border: none;
+    color: #555555;
+    font-size: 24px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.tab-btn.active {
+    color: #ffffff;
+    background: #1a1a1a;
+}
+
+.tab-btn:active {
+    transform: scale(0.9);
+}
+
+/* Панели */
+#panels {
+    background: #0a0a0a;
+    border-radius: 12px;
+    border: 1px solid #1a1a1a;
+    padding: 15px;
+    margin: 10px 0;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.panel {
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.panel.active {
+    display: flex;
+}
+
+/* Кнопки действий */
+.action-btn {
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    color: #ffffff;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.action-btn:active {
+    transform: scale(0.95);
+    background: #2a2a2a;
+}
+
+/* Генераторы */
+.generator-item {
+    background: #0d0d0d;
+    border: 1px solid #1a1a1a;
+    border-radius: 8px;
+    padding: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    transition: all 0.3s;
+}
+
+.generator-item.bought {
+    border-color: #2a5a2a;
+    background: #0d1a0d;
+}
+
+.generator-info {
+    flex: 1;
+}
+
+.generator-name {
+    font-size: 14px;
+    color: #ffffff;
+}
+
+.generator-level {
+    font-size: 12px;
+    color: #888888;
+}
+
+.generator-income {
+    font-size: 12px;
+    color: #ffd700;
+}
+
+.generator-btn {
+    background: #1a5a3a;
+    border: none;
+    color: #ffffff;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.generator-btn:active {
+    transform: scale(0.95);
+}
+
+.generator-btn:disabled {
+    background: #2a2a2a;
+    color: #555555;
+    cursor: not-allowed;
+}
+
+/* Бустеры */
+.booster-item {
+    background: #0d0d0d;
+    border: 1px solid #1a1a1a;
+    border-radius: 8px;
+    padding: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.booster-item span {
+    color: #ffffff;
+    font-size: 14px;
+}
+
+.booster-item button {
+    background: #1a3a5a;
+    border: none;
+    color: #ffffff;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.booster-item button:active {
+    transform: scale(0.95);
+}
+
+#boosters-count {
+    color: #888888;
+    font-size: 12px;
+    text-align: center;
+    margin-top: 10px;
+}
+
+/* Статистика */
+#stats-content {
+    color: #aaaaaa;
+    font-size: 14px;
+    line-height: 2;
+}
+
+#stats-content span {
+    color: #ffffff;
+    font-weight: bold;
+}
+
+/* ===== Окно игры в кубики ===== */
+#dice-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+#dice-modal {
+    background: #0a0a0a;
+    border: 1px solid #2a2a2a;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 400px;
+    padding: 20px;
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+#dice-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #1a1a1a;
+}
+
+#dice-modal-header span {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+#dice-modal-header button {
+    background: transparent;
+    border: none;
+    color: #888;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 0 10px;
+}
+
+#dice-modal-header button:active {
+    transform: scale(0.9);
+}
+
+#dice-modal-body {
+    padding-top: 20px;
+}
+
+#dice-result {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    min-height: 100px;
+    flex-wrap: wrap;
+    padding: 20px 0;
+}
+
+.dice-result-item {
+    font-size: 70px;
+    animation: diceResult 0.6s ease forwards;
+}
+
+@keyframes diceResult {
+    0% { transform: scale(0) rotate(-180deg); opacity: 0; }
+    50% { transform: scale(1.5) rotate(0deg); opacity: 1; }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+#dice-controls-modal {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #1a1a1a;
+}
+
+.dice-selector {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.dice-count {
+    background: #1a1a1a;
+    border: 2px solid #2a2a2a;
+    color: #888;
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.dice-count.active {
+    border-color: #ffd700;
+    color: #ffd700;
+    background: #2a2a2a;
+}
+
+.dice-count:active {
+    transform: scale(0.9);
+}
+
+#rollDiceBtn {
+    background: #1a3a5a;
+    border: none;
+    color: #ffffff;
+    padding: 14px;
+    border-radius: 10px;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+#rollDiceBtn:active {
+    transform: scale(0.95);
+    background: #2a4a6a;
+}
+
+/* Скролл */
+::-webkit-scrollbar {
+    width: 3px;
+}
+
+::-webkit-scrollbar-track {
+    background: #0a0a0a;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #2a2a2a;
+    border-radius: 3px;
+}
+
+/* Адаптив */
+@media (max-width: 480px) {
+    #main-cube {
+        font-size: 100px;
+    }
+    
+    .coins-display {
+        font-size: 20px;
+    }
+    
+    .info-item {
+        font-size: 16px;
+    }
+    
+    .tab-btn {
+        font-size: 20px;
+        padding: 8px 16px;
+    }
+    
+    .mini-cube {
+        font-size: 22px;
+    }
+    
+    .dice-result-item {
+        font-size: 60px;
+    }
+    
+    #dice-modal {
+        width: 95%;
+        padding: 15px;
+    }
+}
